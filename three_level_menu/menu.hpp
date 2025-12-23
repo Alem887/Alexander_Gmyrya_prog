@@ -1,0 +1,11 @@
+#pragma once
+
+namespace ga {
+	struct menu_item {
+		const char* const title;
+		const menu_item* (*func)(const menu_item* current);
+		const menu_item* parent;
+		const menu_item* const *children;
+		const int children_count;
+	};
+}
