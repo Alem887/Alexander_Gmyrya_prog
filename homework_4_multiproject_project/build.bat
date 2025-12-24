@@ -1,9 +1,5 @@
 @echo off
 
-:: Вид сборки / суффикс в названии каталога сборки
-:: "Ninja" / "ninja"
-:: "Visual Studio 17 2022" / "visual_studio"
-
 set BUILD_TYPE=Ninja
 set BUILD_SUFFIX=ninja
 
@@ -20,3 +16,7 @@ cmake -G %BUILD_TYPE% ..\%SOURCE_FOLDER%
 cmake --build .
 
 copy ..\%SOURCE_FOLDER%\obuchaika\run_menu.bat .\obuchaika
+copy ..\%SOURCE_FOLDER%\sort\run_app.bat .\merge_sort
+
+copy ..\run_tests.bat .
+
