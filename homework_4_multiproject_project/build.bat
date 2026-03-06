@@ -1,3 +1,4 @@
+
 @echo off
 
 set BUILD_TYPE=Ninja
