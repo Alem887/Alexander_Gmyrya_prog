@@ -12,6 +12,7 @@ namespace ga {
 		public:
 			LongNumber();
 			LongNumber(const char* const str);
+			LongNumber(const int number);
 			LongNumber(const LongNumber& x);
 			LongNumber(LongNumber&& x);
 			LongNumber(int length, int sign);

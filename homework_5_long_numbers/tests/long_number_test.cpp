@@ -95,9 +95,9 @@ TEST(LongNumberTest, Multiplicate) {
 	LongNumber a_mult_c("-400");
 	LongNumber c_mult_d("200");
 	
-	ASSERT_EQ(a * b, a_mult_b); 
-	ASSERT_EQ(a * c, a_mult_c);
-	ASSERT_EQ(c * d, c_mult_d);
+	ASSERT_EQ(a * b, a_mult_b) << "У(1)"; 
+	ASSERT_EQ(a * c, a_mult_c) << "У(2)";
+	ASSERT_EQ(c * d, c_mult_d) << "У(3)";
 }
 
 TEST(LongNumberTest, Divide) {
@@ -111,11 +111,11 @@ TEST(LongNumberTest, Divide) {
 	LongNumber b_div_a("0");
 	LongNumber d_div_a("0");
 	
-	ASSERT_EQ(a / b, a_div_b);
-	ASSERT_EQ(a / c, a_div_c);
-	ASSERT_EQ(c / d, c_div_d);
-	ASSERT_EQ(b / a, b_div_a);
-	ASSERT_EQ(d / a, d_div_a);
+	ASSERT_EQ(a / b, a_div_b) << "Д(1)";
+	ASSERT_EQ(a / c, a_div_c) << "Д(2)";
+	ASSERT_EQ(c / d, c_div_d) << "Д(3)";
+	ASSERT_EQ(b / a, b_div_a) << "Д(4)";
+	ASSERT_EQ(d / a, d_div_a) << "Д(5)";
 }
 
 TEST(LongNumberTest, Remainder) {
