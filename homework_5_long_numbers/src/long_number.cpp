@@ -340,44 +340,47 @@ LongNumber LongNumber::operator * (const LongNumber& x) const {
 }
 
 LongNumber LongNumber::operator / (const LongNumber& x) const {
-	LongNumber divisor = x;
-	divisor.sign = 1;
-	LongNumber dividend = *this;
-	dividend.sign = 1;
-	if (divisor > dividend) {
-		return 0;
-	}
+    LongNumber divisor = x;
+    divisor.sign = 1;
+    LongNumber dividend = *this;
+    dividend.sign = 1;
 
-	LongNumber rem("0");
-	LongNumber result(length, 1);
+    if (divisor > dividend) {
+        return 0;
+    }
 
-	for (int i = 0; i < length; i++) {
+    LongNumber rem("0");
+    LongNumber result(length, 1);
 
-		rem = rem * 10;
-		rem = rem + dividend.numbers[i];
+    for (int i = 0; i < length; i++) {
 
-		int count = 0;
+        rem = rem * 10;
+        rem = rem + dividend.numbers[i];
 
-		while (!(rem < divisor)) {
-			rem = rem - divisor;
-			count++;
-		}
+        int count = 0;
 
-		result.numbers[i] = count;
-	}
+        while (!(rem < divisor)) {
+            rem = rem - divisor;
+            count++;
+        }
 
-	if (result != 0)
-		result.sign = (sign == x.sign);
-	result.delete_zeros();
-	LongNumber res_abs = result;
-	res_abs.sign = 1;
+        result.numbers[i] = count;
+    }
 
-	if (dividend - divisor * res_abs != 0 && sign == 0) {
-		result = result - 1;
-	}
+    result.delete_zeros();
 
+    if (sign != x.sign) {
+        LongNumber remainder = dividend - (divisor * result);
+        if (remainder != 0) {
+            result = result + 1;
+        }
+    }
 
-	return result;
+    if (result != 0) {
+        result.sign = (sign == x.sign);
+    }
+
+    return result;
 }
 
 LongNumber LongNumber::operator % (const LongNumber& x) const {

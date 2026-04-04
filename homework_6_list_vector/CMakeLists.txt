@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.2...3.27.5)
 
-project(homework_5_long_numbers)
+project(containers)
 
 enable_testing()
 add_subdirectory(lib/googletest)
 
-set(LIBRARY "long_numbers")
-
-add_library(${LIBRARY} "")
+set(CONTAINERS_LIB "containers_lib")
+add_library(${CONTAINERS_LIB} "")
 
 add_subdirectory(src)
-add_subdirectory(tests)
-
+add_subdirectory(test)
