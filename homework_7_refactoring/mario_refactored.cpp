@@ -44,3 +44,48 @@ void set_cur(const int x, const int y);
 void horizon_move_map(const float dx);
 void put_score_on_map(const char* const label);
 void create_level(const int lvl, const char* const level_message);
+
+int main() {
+	create_level(level);
+	
+	do {
+		clear_map();
+		
+		if ((mario.is_fly == FALSE) && (GetKeyState(VK_SPACE) < 0)) {
+			mario.vert_speed = -1;
+		}
+		if (GetKeyState('A') < 0) {
+			horizon_move_map(1);
+		}
+		if (GetKeyState('D') < 0) {
+			horizon_move_map(-1);
+		}
+		
+		if (mario.y > MAP_HEIGHT) {
+			player_dead();
+		}
+		
+		vert_move_object(&mario);
+		mario_collision();
+		
+		for (int i = 0; i < brick_length; i++) {
+			put_object_on_map(brick[i]);
+		}
+		for (int i = 0; i < moving_length; i++) {
+			vert_move_object(moving + i);
+			
+			horizon_move_object(moving + i);
+			put_object_on_map(moving[i]);
+		}
+		
+		put_object_on_map(mario); 
+		put_score_on_map();
+		
+		set_cur(0, 0);
+		show_map();
+		
+		//Sleep(10);
+	} while (GetKeyState(VK_ESCAPE) >= 0);
+	
+	return 0;
+}
