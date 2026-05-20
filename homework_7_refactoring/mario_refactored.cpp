@@ -86,8 +86,12 @@ int main() {
 		//Sleep(10);
 	} while (GetKeyState(VK_ESCAPE) >= 0);
 	
-	if (brick != NULL) free(brick);
-	if (moving != NULL) free(moving);
+	if (brick != NULL) {
+		delete[] brick;
+	}
+	if (moving != NULL) {
+		delete[] moving;
+	}
 	
 	return 0;
 }
@@ -166,8 +170,18 @@ void vert_move_object(TObject* const obj, TObject& mario, TObject*& brick, int& 
 
 void delete_moving(TObject*& moving, int& moving_length, const int i) {
 	moving_length--;
-	moving[i] = moving[moving_length];
-	moving = (TObject*)realloc(moving, sizeof(*moving) * moving_length);
+	if (moving_length > 0) {
+		moving[i] = moving[moving_length];
+		TObject* temp_moving = new TObject[moving_length];
+		for (int j = 0; j < moving_length; j++) {
+			temp_moving[j] = moving[j];
+		}
+		delete[] moving;
+		moving = temp_moving;
+	} else {
+		delete[] moving;
+		moving = NULL;
+	}
 }
 
 void mario_collision(TObject& mario, TObject*& moving, int& moving_length, int& score, TObject*& brick, int& brick_length, int& level, int& max_lvl) {
@@ -272,13 +286,29 @@ BOOL is_collision(const TObject o1, const TObject o2) {
 
 TObject* get_new_brick(TObject*& brick, int& brick_length) {
 	brick_length++;
-	brick = (TObject*)realloc(brick, sizeof(*brick) * brick_length);
+	TObject* temp_brick = new TObject[brick_length];
+	
+	if (brick != NULL) {
+		for (int j = 0; j < brick_length - 1; j++) {
+			temp_brick[j] = brick[j];
+		}
+		delete[] brick;
+	}
+	brick = temp_brick;
 	return brick + brick_length - 1;
 }
 
 TObject* get_new_moving(TObject*& moving, int& moving_length) {
 	moving_length++;
-	moving = (TObject*)realloc(moving, sizeof(*moving) * moving_length);
+	TObject* temp_moving = new TObject[moving_length];
+	
+	if (moving != NULL) {
+		for (int j = 0; j < moving_length - 1; j++) {
+			temp_moving[j] = moving[j];
+		}
+		delete[] moving;
+	}
+	moving = temp_moving;
 	return moving + moving_length - 1;
 }
 
