@@ -135,7 +135,7 @@ void player_dead(TObject& mario, TObject*& brick, int& brick_length, TObject*& m
 
 void vert_move_object(TObject* const obj, TObject& mario, TObject*& brick, int& brick_length, TObject*& moving, int& moving_length, int& level, int& score, int& max_lvl) {
 	(*obj).is_fly = TRUE;
-	(*obj).vert_speed += 0.05f;
+	(*obj).vert_speed += 0.05;
 	set_object_pos(obj, (*obj).x, (*obj).y + (*obj).vert_speed);
 	
 	for (int i = 0; i < brick_length; i++) {
