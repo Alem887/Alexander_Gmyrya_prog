@@ -326,9 +326,11 @@ void create_level(const int lvl, TObject& mario, TObject*& brick, int& brick_len
 	system("color 9F");
 	
 	brick_length = 0;
-	brick = (TObject*)realloc(brick, 0);
+	delete[] brick;
+	brick = NULL;
 	moving_length = 0;
-	moving = (TObject*)realloc(moving, 0);
+	delete[] moving;
+	moving = NULL;
 	
 	init_object(&mario, 39, 10, 3, 3, '@');
 	score = 0;
