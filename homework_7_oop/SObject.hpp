@@ -7,8 +7,8 @@ class SObject {
 public:
     BOOL is_fly;
     char c_type;
-    const float height;
-	const float width;
+    float height;
+	float width;
     float horiz_speed;
     float vert_speed;
     float x;

@@ -1,13 +1,17 @@
 #include "Game.hpp"
+#include "Mario.hpp"
+
 #include <windows.h>
 
 Game::Game() : brick(nullptr), moving(nullptr), brick_length(0), moving_length(0), level(1), score(0), max_lvl(3) {
-    create_level(level);
+    mario_ptr = new Mario();
+	create_level(level);
 }
 
 Game::~Game() {
     if (brick != nullptr) delete[] brick;
     if (moving != nullptr) delete[] moving;
+	if (mario_ptr != nullptr) delete mario_ptr;
 }
 
 void Game::player_dead() {
@@ -17,14 +21,14 @@ void Game::player_dead() {
 }
 
 void Game::horizon_move_map(const float dx) {
-    mario.x -= dx;
+    mario_ptr->x -= dx;
     for (int i = 0; i < brick_length; i++) {
-        if (mario.is_collision(brick[i])) {
-            mario.x += dx;
+        if (mario_ptr->is_collision(brick[i])) {
+            mario_ptr->x += dx;
             return;
         }
     }
-    mario.x += dx;
+    mario_ptr->x += dx;
     
     for (int i = 0; i < brick_length; i++) {
         brick[i].x += dx;
@@ -36,7 +40,7 @@ void Game::horizon_move_map(const float dx) {
 
 SObject* Game::get_new_brick(SObject*& brick_ref, int& brick_len) {
     brick_len++;
-    SObject* temp_brick = new Brick[brick_len];
+    SObject* temp_brick = new SObject[brick_len];
     if (brick_ref != nullptr) {
         for (int j = 0; j < brick_len - 1; j++) {
             temp_brick[j] = brick_ref[j];
@@ -49,7 +53,7 @@ SObject* Game::get_new_brick(SObject*& brick_ref, int& brick_len) {
 
 SObject* Game::get_new_moving(SObject*& moving_ref, int& moving_len) {
     moving_len++;
-    SObject* temp_moving = new Moving[moving_len];
+    SObject* temp_moving = new SObject[moving_len];
     if (moving_ref != nullptr) {
         for (int j = 0; j < moving_len - 1; j++) {
             temp_moving[j] = moving_ref[j];
@@ -64,7 +68,7 @@ void Game::delete_moving(SObject*& moving_ref, int& moving_len, const int i) {
     moving_len--;
     if (moving_len > 0) {
         moving_ref[i] = moving_ref[moving_len];
-        SObject* temp_moving = new Moving[moving_len];
+        SObject* temp_moving = new SObject[moving_len];
         for (int j = 0; j < moving_len; j++) {
             temp_moving[j] = moving_ref[j];
         }
@@ -79,14 +83,13 @@ void Game::delete_moving(SObject*& moving_ref, int& moving_len, const int i) {
 void Game::create_level(const int lvl) {
     system("color 9F");
     
-    // Исправлено: безопасное освобождение старых массивов вместо realloc(0)
     if (brick != nullptr) { delete[] brick; brick = nullptr; }
     if (moving != nullptr) { delete[] moving; moving = nullptr; }
     
     brick_length = 0;
     moving_length = 0;
     
-    mario.init_object(39, 10, 3, 3, '@');
+    mario_ptr->init_object(39, 10, 3, 3, '@');
     score = 0;
     
     switch (lvl) {
@@ -151,8 +154,8 @@ void Game::run() {
     do {
         map_obj.clear_map(); 
         
-        if ((mario.is_fly == FALSE) && (GetKeyState(VK_SPACE) < 0)) {
-            mario.vert_speed = -1;
+        if ((mario_ptr->is_fly == FALSE) && (GetKeyState(VK_SPACE) < 0)) {
+            mario_ptr->vert_speed = -1;
         }
         if (GetKeyState('A') < 0) {
             horizon_move_map(1);
@@ -161,23 +164,23 @@ void Game::run() {
             horizon_move_map(-1);
         }
         
-        if (mario.y > MAP_HEIGHT) {
+        if (mario_ptr->y > MAP_HEIGHT) {
             player_dead();
         }
         
-        mario.vert_move_object(&mario, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
-        mario.mario_collision(moving, moving_length, score, brick, brick_length, level, max_lvl, *this);
+        mario_ptr->vert_move_object(mario_ptr, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
+        mario_ptr->mario_collision(moving, moving_length, score, brick, brick_length, level, max_lvl, *this);
         
         for (int i = 0; i < brick_length; i++) {
             brick[i].put_object_on_map(map_obj.get_matrix());
         }
         for (int i = 0; i < moving_length; i++) {
-            mario.vert_move_object(moving + i, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
-            mario.horizon_move_object(moving + i, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
+            mario_ptr->vert_move_object(moving + i, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
+            mario_ptr->horizon_move_object(moving + i, brick, brick_length, moving, moving_length, level, score, max_lvl, *this);
             moving[i].put_object_on_map(map_obj.get_matrix());
         }
         
-        mario.put_object_on_map(map_obj.get_matrix()); 
+        mario_ptr->put_object_on_map(map_obj.get_matrix()); 
         map_obj.put_score_on_map(score);
         
         map_obj.set_cur(0, 0);

@@ -1,4 +1,6 @@
 #include "Mario.hpp"
+#include "Game.hpp"
+#include "SObject.hpp"
 
 void Mario::vert_move_object(SObject* const obj, SObject*& brick, int& brick_length, SObject*& moving, int& moving_length, int& level, int& score, int& max_lvl, Game& game) {
     (*obj).is_fly = TRUE;

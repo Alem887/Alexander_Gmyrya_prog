@@ -1,15 +1,15 @@
 #pragma once
 
 #include "Map.hpp"
-#include "Mario.hpp"
-#include "Brick.hpp"
-#include "Moving.hpp"
+#include "SObject.hpp"
+
+class Mario;
 
 class Game {
 private:
     Map map_obj;
-    Mario mario;
-    Sobject* brick;
+    Mario* mario_ptr;
+    SObject* brick;
     SObject* moving;
     
     int brick_length;
@@ -25,8 +25,8 @@ public:
     void create_level(const int lvl);
     void player_dead();
     void horizon_move_map(const float dx);
-    Brick* get_new_brick(SObject*& brick_ref, int& brick_len);
-    Moving* get_new_moving(Sobject*& moving_ref, int& moving_len);
+	SObject* get_new_brick(SObject*& brick_ref, int& brick_len);
+    SObject* get_new_moving(SObject*& moving_ref, int& moving_len);
     void delete_moving(SObject*& moving_ref, int& moving_len, const int i);
     
     void run();

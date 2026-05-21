@@ -122,7 +122,8 @@ void init_object(TObject* const obj, const float x_pos, const float y_pos, const
 	set_object_pos(obj, x_pos, y_pos);
 	(*obj).width = o_width;
 	(*obj).height = o_height;
-	(*obj).vert_speed = 0;
+	(*obj).
+	= 0;
 	(*obj).c_type = in_type;
 	(*obj).horiz_speed = 0.2f;
 }
