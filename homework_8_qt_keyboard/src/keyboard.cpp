@@ -17,11 +17,14 @@ KeyBoard::KeyBoard(const int width, QWidget* parent)
 	KeyBoardButton* backspace_btn = new KeyBoardButton("Удалить");
 	backspace_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(backspace_btn, 0, 26, 2, 3);
+	connect(backspace_btn, &QPushButton::clicked, this, [this]() {emit process_key_action("BACKSPACE");});
+	backspace_btn->setFocusPolicy(Qt::NoFocus);
 
 	// 2-я линия
 	KeyBoardButton* tab_btn = new KeyBoardButton("Tab");
 	tab_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(tab_btn, 2, 0, 2, 3);
+	tab_btn->setFocusPolicy(Qt::NoFocus);
 	
 	create_buttons(keyboard_data->get_line2(), keys_layout, 2, 3);
 	
@@ -29,28 +32,36 @@ KeyBoard::KeyBoard(const int width, QWidget* parent)
 	KeyBoardButton* caps_btn = new KeyBoardButton("Caps");
 	caps_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(caps_btn, 4, 0, 2, 4);
+	caps_btn->setFocusPolicy(Qt::NoFocus);
 	
 	create_buttons(keyboard_data->get_line3(), keys_layout, 4, 4);
 	
 	KeyBoardButton* enter_btn = new KeyBoardButton("Enter");
 	enter_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(enter_btn, 4, 26, 2, 3);
+	caps_btn->setFocusPolicy(Qt::NoFocus);
+	connect(enter_btn, &QPushButton::clicked, this, [this]() {emit process_key_action("ENTER");});
+	enter_btn->setFocusPolicy(Qt::NoFocus);
 	
 	// 4-я линия
 	KeyBoardButton* left_shift_btn = new KeyBoardButton("Shift");
 	left_shift_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(left_shift_btn, 6, 0, 2, 5);
+	left_shift_btn->setFocusPolicy(Qt::NoFocus);
 	
 	create_buttons(keyboard_data->get_line4(), keys_layout, 6, 5);
 	
 	KeyBoardButton* right_shift_btn = new KeyBoardButton("Shift");
 	right_shift_btn->setMinimumSize(2 * button_width, button_width);
 	keys_layout->addWidget(right_shift_btn, 6, 25, 2, 4);
+	right_shift_btn->setFocusPolicy(Qt::NoFocus);
 
 	// 5-я линия
 	KeyBoardButton* space = new KeyBoardButton();
 	space->setMinimumSize(8 * button_width, button_width);
 	keys_layout->addWidget(space, 8, 7, 2, 16);
+	connect(space, &QPushButton::clicked, this, [this]() {emit process_key_action(" ");});
+	space->setFocusPolicy(Qt::NoFocus);
 }
 
 void KeyBoard::animate_button(const int code) {
@@ -63,6 +74,10 @@ QString KeyBoard::get_key_text(const int code) const {
 
 bool KeyBoard::is_key_allowed(const int code) const noexcept {
 	return keyboard_data->is_key_allowed(code);
+}
+
+void KeyBoard::process_key_action(const QString& action) {
+    emit virtual_key_pressed(action);
 }
 
 // ----------------------------------------------------------------------------
@@ -81,5 +96,7 @@ void KeyBoard::create_buttons(
 		layout->addWidget(btn, line, i * 2 + start_position, 2, 2);
 		
 		buttons[data[i].code] = btn;
+		connect(btn, &QPushButton::clicked, this, [this, btn]() {emit process_key_action(btn->text());});
+		btn->setFocusPolicy(Qt::NoFocus);
 	}
 }

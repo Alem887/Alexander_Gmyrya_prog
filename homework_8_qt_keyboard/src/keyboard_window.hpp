@@ -21,6 +21,11 @@ namespace ag {
 			
 		public slots:
 			void show_keyboard();
+			void use_key(const QString& action);
+			
+		signals:
+			void window_shown();
+			void physical_key_pressed(const QString& action);
 			
 		protected:
 			void keyPressEvent(QKeyEvent* event) override;

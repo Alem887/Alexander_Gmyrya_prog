@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
     welcome_window.show();
 	
 	QObject::connect(&welcome_window, &ag::WelcomeWindow::open_keyboard, &keyboard_window, &ag::KeyBoardWindow::show_keyboard);
+	QObject::connect(&keyboard_window, &ag::KeyBoardWindow::window_shown, &welcome_window, &ag::WelcomeWindow::close);
 	
     return app.exec();
 }

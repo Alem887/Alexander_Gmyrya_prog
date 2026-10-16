@@ -15,6 +15,6 @@ cmake -G %BUILD_TYPE% ..\%SOURCE_FOLDER%
 cmake --build .
 
 if not exist %IMG_FOLDER% mkdir %IMG_FOLDER%
-copy ..\%IMG_FOLDER%\grustnii-smail.png %IMG_FOLDER%\
+copy ..\%IMG_FOLDER%\veseli_smile.jpg %IMG_FOLDER%\
 
 cd ..
